@@ -50,7 +50,7 @@ OK, we're going to use that boundary to take a slice of map data from OpenStreet
 
 #### Put it all together
 
-Here, use the names you used above instead of `yourplace` for your `.geojson` and `.pbf` files:
+Here, use the name you used above instead of `yourplace` for your `.geojson` and `.pbf` files:
 
 - Start the `protomaps-workshop` Codespace. Can be yours or mine. [tk how]
 - Click into the terminal window
