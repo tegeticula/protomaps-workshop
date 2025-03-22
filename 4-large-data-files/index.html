@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <title>Protomaps - Tornado Paths</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css" crossorigin="anonymous">
+    <script src="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/pmtiles@4.2.1/dist/pmtiles.js"></script>
+    <script src="https://unpkg.com/@protomaps/basemaps@5.0.0/dist/basemaps.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script type="text/javascript">
+        let protocol = new pmtiles.Protocol();
+        maplibregl.addProtocol("pmtiles", protocol.tile);
+
+        const map = new maplibregl.Map({
+            container: "map",
+            zoom: 13,
+            center: [-93.262984, 44.977863],
+            style: {
+                version: 8,
+                glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
+                sprite: `https://protomaps.github.io/basemaps-assets/sprites/v4/light`,
+                sources: {
+                    basemap: {
+                        type: "vector",
+                        url: "pmtiles://../tiles/basemap_nyc.pmtiles",
+                        attribution: "<a href='https://protomaps.com'>Protomaps</a> <a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>"
+                    },
+                    // other_source: {
+                    //   type: "geojson",
+                    //   data: "../data/parade.geojson",
+                    //   // data: "../lines.geojson"
+                    // }
+                },
+                layers: [
+                    ...basemaps.layers("basemap", basemaps.namedFlavor("white"), { lang: "en" }),
+                    // {
+                    //     id: "other_layer",
+                    //     source: "other_source",
+                    //     type: "line",
+                    //     paint: {
+                    //         "line-color": "steelblue"
+                    //     }
+                    // },
+                ]
+            },
+        });
+    </script>
+</body>
+
+</html>
