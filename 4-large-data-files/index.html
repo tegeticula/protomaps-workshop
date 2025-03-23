@@ -1,10 +1,10 @@
 <html>
 
 <head>
-    <title>Protomaps - Tornado Paths</title>
+    <title>Protomaps - Parade</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css" crossorigin="anonymous">
-    <script src="https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/maplibre-gl@^5.2.0/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@^5.2.0/dist/maplibre-gl.css" rel="stylesheet" />
     <script src="https://unpkg.com/pmtiles@4.2.1/dist/pmtiles.js"></script>
     <script src="https://unpkg.com/@protomaps/basemaps@5.0.0/dist/basemaps.js"></script>
     <style>
@@ -27,37 +27,34 @@
 
         const map = new maplibregl.Map({
             container: "map",
-            zoom: 13,
-            center: [-93.262984, 44.977863],
-            style: {
-                version: 8,
-                glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
-                sprite: `https://protomaps.github.io/basemaps-assets/sprites/v4/light`,
-                sources: {
-                    basemap: {
-                        type: "vector",
-                        url: "pmtiles://../tiles/basemap_nyc.pmtiles",
-                        attribution: "<a href='https://protomaps.com'>Protomaps</a> <a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>"
-                    },
-                    // other_source: {
-                    //   type: "geojson",
-                    //   data: "../data/parade.geojson",
-                    //   // data: "../lines.geojson"
-                    // }
-                },
-                layers: [
-                    ...basemaps.layers("basemap", basemaps.namedFlavor("white"), { lang: "en" }),
-                    // {
-                    //     id: "other_layer",
-                    //     source: "other_source",
-                    //     type: "line",
-                    //     paint: {
-                    //         "line-color": "steelblue"
-                    //     }
-                    // },
-                ]
-            },
+            zoom: 10,
+            center: [-73.96, 40.70],
+            style: "https://api.protomaps.com/styles/v5/white/en.json?key=8a5da0b18dde352d"
         });
+
+        // Big tornado layer //
+        map.on("load", () => {
+        map.addSource("tornado-paths", {
+            type: "vector",
+            url: "pmtiles://./tornadoes.pmtiles",
+        });
+
+        map.addLayer(
+            {
+            id: "tornado-layer",
+            type: "line",
+            source: "tornado-paths",
+            'source-layer': 'tornadoes19502023',
+            paint: {
+                "line-color": "blue",
+                "line-width": 1,
+            },
+            },
+            // "land"
+        );
+        });
+
+
     </script>
 </body>
 
