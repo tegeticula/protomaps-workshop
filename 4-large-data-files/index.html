@@ -29,8 +29,10 @@
             container: "map",
             zoom: 10,
             center: [-73.96, 40.70],
-            style: "https://api.protomaps.com/styles/v5/white/en.json?key=8a5da0b18dde352d"
+            style: "https://api.protomaps.com/styles/v5/light/en.json?key=8a5da0b18dde352d"
         });
+
+        console.log(map)
 
         // Big tornado layer //
         map.on("load", () => {
@@ -46,11 +48,11 @@
             source: "tornado-paths",
             'source-layer': 'tornadoes19502023',
             paint: {
-                "line-color": "blue",
+                "line-color": "red",
                 "line-width": 1,
             },
             },
-            // "land"
+            "address_label"
         );
         });
 
