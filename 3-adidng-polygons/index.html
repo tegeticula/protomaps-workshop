@@ -41,7 +41,7 @@
                     },
                     other_source: {
                         type: "geojson",
-                        data: "./hurricane-zones.json"
+                        data: "./hurricane-zones-miami.json"
                     }
                 },
                 layers: [
@@ -60,15 +60,23 @@
                                 "D", "#fa9fb5",
                                 "E", "#fcc5c0",
                                 "F", "#feebe2",
-                                "#cccccc"        // default color if no match
+                                "#eeeeee"        // default color if no match
                             ],
-                            'fill-opacity': 0.7
+                            'fill-opacity': 0.6,
+                            'fill-outline-color': "rgba(0, 0, 0, 0)"
                         }
                     },
                     ...basemaps.layers("basemap", basemaps.namedFlavor("white"), { lang: "en", labelsOnly: true })
                 ]
             },
         });
+
+        map.fitBounds([
+            [-81.014125,
+            25.114069],
+            [-79.977119,
+            26.146186]
+        ], { padding: 20 });
 
         // Create a popup, but don't add it to the map yet.
         const popup = new maplibregl.Popup({
@@ -84,7 +92,7 @@
             const coordinates = e.lngLat;
 
             // get the information from the zone we're over
-            const zone = e.features[0].properties.evac_zone;
+            const zone = e.features[0].properties.ZONEID || "not needed";
 
             // Make the popup text
             const description = `<b>Zone ${zone}`
