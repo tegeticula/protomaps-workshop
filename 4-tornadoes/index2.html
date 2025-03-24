@@ -30,31 +30,39 @@
             zoom: 10,
             center: [-73.96, 40.70],
             style: {
+                version: 8,
+                glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
+                sprite: `https://protomaps.github.io/basemaps-assets/sprites/v4/light`,
                 sources: {
                     "protomaps": {
-                        type: "vector",
-                        url: "https://api.protomaps.com/styles/v5/light/en.json?key=8a5da0b18dde352d"
+                        "type": "vector",
+                        "url": "https://api.protomaps.com/tiles/v4.json?key=41a94c05750965ab",
+                        "attribution": "<a href=\"https://osm.org/copyright\">© OpenStreetMap</a>",
                     },
                     "tornado-paths": {
                         type: "vector",
                         url: "pmtiles://./tornadoes.pmtiles",
                     }
-
-                }
-            },
-            layers: [
-                ...basemaps.layers("protomaps", basemaps.namedFlavor("white"), { lang: "en" }),
-                {
-                    id: "tornado-layer",
-                    type: "line",
-                    source: "tornado-paths",
-                    'source-layer': 'tornadoes19502023',
-                    paint: {
-                        "line-color": "red",
-                        "line-width": 1,
-                    },
                 },
-            ]
+                layers: [
+                    ...basemaps.layers("protomaps",basemaps.namedFlavor("light")),
+                    {
+                        id: "tornado-layer",
+                        type: "line",
+                        source: "tornado-paths",
+                        'source-layer': 'tornadoes19502023',
+                        paint: {
+                            "line-color": "red",
+                            "line-width": 1,
+                        },
+                    },
+                    ...basemaps.layers("protomaps", basemaps.namedFlavor("light"), { lang: "en", labelsOnly: true })
+                ]
+            //     layers: [
+            //     basemaps.layers("protomaps",basemaps.namedFlavor("light"),{lang:"en"}),
+
+            },
+            
         });
 
         // console.log(map)
