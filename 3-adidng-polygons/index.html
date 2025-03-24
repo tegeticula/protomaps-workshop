@@ -28,7 +28,7 @@
         const map = new maplibregl.Map({
             container: "map",
             zoom: 10,
-            center: [-73.96, 40.70],
+            center: [-80.42, 25.65],
             style: {
                 version: 8,
                 glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
@@ -36,7 +36,7 @@
                 sources: {
                     basemap: {
                         type: "vector",
-                        url: "pmtiles://../tiles/nyc.pmtiles",
+                        url: "pmtiles://./miami.pmtiles",
                         attribution: "<a href='https://protomaps.com'>Protomaps</a> <a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>"
                     },
                     other_source: {
@@ -53,13 +53,13 @@
                         'paint': {
                             "fill-color": [
                                 "match",
-                                ["get", "evac_zone"],
-                                "1", "#7a0177",
-                                "2", "#c51b8a",
-                                "3", "#f768a1",
-                                "4", "#fa9fb5",
-                                "5", "#fcc5c0",
-                                "6", "#feebe2",
+                                ["get", "ZONEID"],
+                                "A", "#7a0177",
+                                "B", "#c51b8a",
+                                "C", "#f768a1",
+                                "D", "#fa9fb5",
+                                "E", "#fcc5c0",
+                                "F", "#feebe2",
                                 "#cccccc"        // default color if no match
                             ],
                             'fill-opacity': 0.7
