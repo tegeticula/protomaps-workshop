@@ -1,0 +1,114 @@
+<html>
+
+<head>
+    <title>Protomaps - Hurricane Zones</title>
+    <meta charset="utf-8" />
+    <script src="https://unpkg.com/maplibre-gl@^5.2.0/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@^5.2.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/pmtiles@4.2.1/dist/pmtiles.js"></script>
+    <script src="https://unpkg.com/@protomaps/basemaps@5.0.0/dist/basemaps.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script type="text/javascript">
+        let protocol = new pmtiles.Protocol();
+        maplibregl.addProtocol("pmtiles", protocol.tile);
+
+        const map = new maplibregl.Map({
+            container: "map",
+            zoom: 10,
+            center: [-80.42, 25.65],
+            style: {
+                version: 8,
+                glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
+                sprite: `https://protomaps.github.io/basemaps-assets/sprites/v4/light`,
+                sources: {
+                    basemap: {
+                        type: "vector",
+                        url: "pmtiles://./basemap-miami.pmtiles",
+                        attribution: "<a href='https://protomaps.com'>Protomaps</a> <a href='https://openstreetmap.org/copyright'>© OpenStreetMap Contributors</a>"
+                    },
+                    other_source: {
+                        type: "geojson",
+                        data: "./hurricane-zones-miami.json"
+                    }
+                },
+                layers: [
+                    ...basemaps.layers("basemap", basemaps.namedFlavor("white")),
+                    {
+                        id: "other_layer",
+                        source: "other_source",
+                        type: "fill",
+                        'paint': {
+                            "fill-color": [
+                                "match",
+                                ["get", "ZONEID"],
+                                "A", "#7a0177",
+                                "B", "#c51b8a",
+                                "C", "#f768a1",
+                                "D", "#fa9fb5",
+                                "E", "#fcc5c0",
+                                "F", "#feebe2",
+                                "#eeeeee"        // default color if no match
+                            ],
+                            'fill-opacity': 0.6,
+                            'fill-outline-color': "rgba(0, 0, 0, 0)"
+                        }
+                    },
+                    ...basemaps.layers("basemap", basemaps.namedFlavor("white"), { lang: "en", labelsOnly: true })
+                ]
+            },
+        });
+
+        map.fitBounds([
+            [-81.014125,
+            25.114069],
+            [-79.977119,
+            26.146186]
+        ], { padding: 20 });
+
+        // Create a popup, but don't add it to the map yet.
+        const popup = new maplibregl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
+
+        map.on("mousemove", "other_layer", (e) => {
+            // Change the cursor style 
+            map.getCanvas().style.cursor = "pointer";
+
+            // Get mouse coordinates
+            const coordinates = e.lngLat;
+
+            // get the information from the zone we're over
+            const zone = e.features[0].properties.ZONEID || "not needed";
+
+            // Make the popup text
+            const description = `<b>Zone ${zone}`
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(coordinates).setHTML(description).addTo(map);
+        });
+
+        // remove the popup when we leave all zones
+        map.on("mouseleave", "other_layer", () => {
+            map.getCanvas().style.cursor = "";
+            popup.remove();
+        });
+
+    </script>
+</body>
+
+</html>
