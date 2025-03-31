@@ -51,3 +51,6 @@ venv
 # big workshop files
 tornadoes.pmtiles
 
+# tippecanoe repo
+/tippecanoe
+
