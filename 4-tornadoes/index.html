@@ -63,6 +63,12 @@
 
         });
 
+        // map.addControl add zoom buttons to the map (and others if you want).
+        map.addControl(new maplibregl.NavigationControl({
+            showZoom: true,
+            showCompass: false
+        }));
+
     </script>
 </body>
 
