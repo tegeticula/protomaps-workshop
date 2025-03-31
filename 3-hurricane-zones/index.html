@@ -93,7 +93,7 @@
             closeOnClick: false
         });
 
-        // if the map moves into "other_layer" do stuff!
+        // if the cursor moves into "other_layer" do stuff!
         map.on("mousemove", "other_layer", (e) => {
             // Change the cursor style 
             map.getCanvas().style.cursor = "pointer";
@@ -105,7 +105,7 @@
             const zone = e.features[0].properties.ZONEID || "not needed";
 
             // Make the popup text
-            const description = `<b>Zone ${zone}`
+            const description = `<b>Zone ${zone}</b>`
 
             // Populate the popup and set its coordinates
             // based on the feature found.
