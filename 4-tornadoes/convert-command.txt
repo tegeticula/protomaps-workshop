@@ -1,1 +1,1 @@
-tippecanoe 4-tornadoes/tornadoes1950-2023.json -o 4-tornadoes/tornadoes.pmtiles -l tornlayer --drop-smallest-as-needed -z13 --force
+tippecanoe 4-tornadoes/1950-2023-torn-aspath.json -o 4-tornadoes/tornadoes.pmtiles -l tornlayer --drop-smallest-as-needed -z13 --force
