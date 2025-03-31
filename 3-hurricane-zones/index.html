@@ -45,7 +45,7 @@
                     }
                 },
                 layers: [
-                    ...basemaps.layers("basemap", basemaps.namedFlavor("white")),
+                    ...basemaps.layers("basemap", basemaps.namedFlavor("grayscale")),
                     {
                         id: "other_layer",
                         source: "other_source",
@@ -66,17 +66,26 @@
                             'fill-outline-color': "rgba(0, 0, 0, 0)"
                         }
                     },
-                    ...basemaps.layers("basemap", basemaps.namedFlavor("white"), { lang: "en", labelsOnly: true })
+                    ...basemaps.layers("basemap", basemaps.namedFlavor("grayscale"), { lang: "en", labelsOnly: true })
                 ]
             },
         });
 
+        // map.addControl add zoom buttons to the map (and others if you want).
+        map.addControl(new maplibregl.NavigationControl({
+            showZoom: true,
+            showCompass: false
+        }));
+
+        // map.fitBounds pre-zooms the map to fit the latitude/longitude boundaries
+        // of the parade route. Points are the southwest and northeast corners.
+        // Helpful for resizing to maps of different sizes! (Mobile or desktop)
         map.fitBounds([
-            [-81.014125,
-            25.114069],
-            [-79.977119,
-            26.146186]
+            [-80.624896, 25.310222],
+            [-80.098577, 25.88083]
         ], { padding: 20 });
+
+        // start of popup code ...
 
         // Create a popup, but don't add it to the map yet.
         const popup = new maplibregl.Popup({
@@ -84,6 +93,7 @@
             closeOnClick: false
         });
 
+        // if the map moves into "other_layer" do stuff!
         map.on("mousemove", "other_layer", (e) => {
             // Change the cursor style 
             map.getCanvas().style.cursor = "pointer";
@@ -91,7 +101,7 @@
             // Get mouse coordinates
             const coordinates = e.lngLat;
 
-            // get the information from the zone we're over
+            // get the information from the zone at those coordinates
             const zone = e.features[0].properties.ZONEID || "not needed";
 
             // Make the popup text
@@ -102,11 +112,13 @@
             popup.setLngLat(coordinates).setHTML(description).addTo(map);
         });
 
-        // remove the popup when we leave all zones
+        // When we leave "other_layer," make the popup disappear
         map.on("mouseleave", "other_layer", () => {
             map.getCanvas().style.cursor = "";
             popup.remove();
         });
+
+        // ... end of popup code
 
     </script>
 </body>
